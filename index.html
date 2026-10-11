@@ -1,1 +1,938 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080b12">
+  <meta name="description" content="GameCraft Studio – community, games, and upcoming projects.">
+  <title>GameCraft Studio</title>
 
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #080b12;
+      --panel: rgba(17, 23, 36, .94);
+      --line: rgba(174, 195, 255, .17);
+      --text: #f5f7ff;
+      --muted: #aab4c9;
+      --blue: #5f8cff;
+      --cyan: #5be7f2;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(ellipse at 80% 0%, rgba(49, 81, 163, .18), transparent 42%),
+        radial-gradient(ellipse at 4% 45%, rgba(42, 157, 176, .08), transparent 35%),
+        var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system,
+        BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    a { color: inherit; }
+
+    .site-header {
+      width: min(1180px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 22px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      position: relative;
+      z-index: 20;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 13px;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      color: #fff;
+      font-weight: 900;
+      font-size: 18px;
+      background: linear-gradient(
+        135deg, var(--blue), #6a53d9 58%, var(--cyan)
+      );
+      box-shadow: 0 8px 28px rgba(83, 122, 255, .28);
+    }
+
+    .brand-name {
+      font-size: 17px;
+      line-height: 1.1;
+      font-weight: 850;
+      letter-spacing: .045em;
+    }
+
+    .brand-sub {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+    }
+
+    .menu-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 11px 15px;
+      background: rgba(19, 26, 41, .78);
+      color: var(--text);
+      text-decoration: none;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 750;
+      transition: border-color .2s, background .2s, transform .2s;
+    }
+
+    .menu-toggle:hover {
+      border-color: rgba(114, 153, 255, .7);
+      background: rgba(34, 46, 75, .95);
+      transform: translateY(-1px);
+    }
+
+    .menu-arrow {
+      color: var(--cyan);
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .scroll-menu {
+      margin: 0 0 52px;
+      padding: clamp(22px, 4vw, 38px);
+      border: 1px solid rgba(153, 177, 255, .18);
+      border-radius: 25px;
+      background: linear-gradient(
+        145deg, rgba(17, 24, 39, .95), rgba(10, 14, 24, .92)
+      );
+      box-shadow: 0 20px 60px rgba(0,0,0,.2);
+      scroll-margin-top: 20px;
+    }
+
+    .scroll-menu-heading {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 21px;
+    }
+
+    .scroll-menu-heading h2 {
+      margin: 0;
+      font-size: clamp(22px, 3vw, 30px);
+      letter-spacing: -.04em;
+    }
+
+    .scroll-menu-heading p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .soon {
+      flex: 0 0 auto;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .09em;
+      color: #a8bbff;
+      background: rgba(95,140,255,.13);
+      border: 1px solid rgba(95,140,255,.18);
+      padding: 7px 9px;
+      border-radius: 7px;
+    }
+
+    .tile-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(10px, 2vw, 16px);
+      max-width: 650px;
+      margin: 0 auto;
+    }
+
+    .tile {
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(156, 178, 255, .22);
+      border-radius: 17px;
+      background: linear-gradient(
+        145deg, rgba(37, 48, 74, .83), rgba(17, 23, 37, .85)
+      );
+      color: #dce5ff;
+      font-size: clamp(34px, 5vw, 54px);
+      font-weight: 500;
+      line-height: 1;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.035),
+        0 10px 24px rgba(0,0,0,.12);
+      user-select: none;
+      transition: border-color .2s, color .2s, transform .2s, background .2s;
+    }
+
+    .tile:hover {
+      border-color: rgba(91, 231, 242, .65);
+      color: var(--cyan);
+      transform: translateY(-3px);
+      background: linear-gradient(
+        145deg, rgba(38, 63, 91, .9), rgba(17, 23, 37, .95)
+      );
+    }
+
+    .menu-divider {
+      height: 1px;
+      background: var(--line);
+      margin: 26px 0 18px;
+    }
+
+    .discord-link {
+      min-height: 48px;
+      width: min(100%, 410px);
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 13px;
+      background: linear-gradient(105deg, #5865f2, #6478ff);
+      color: white;
+      box-shadow: 0 8px 24px rgba(88,101,242,.2);
+      transition: filter .2s, transform .2s;
+    }
+
+    .discord-link:hover {
+      filter: brightness(1.1);
+      transform: translateY(-1px);
+    }
+
+    .discord-icon {
+      width: 19px;
+      height: 19px;
+      flex: 0 0 auto;
+    }
+
+    .creator-apply {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: min(100%, 410px);
+      min-height: 50px;
+      margin: 0 auto 22px;
+      border: 1px solid rgba(91,231,242,.35);
+      border-radius: 12px;
+      color: #071018;
+      background: linear-gradient(105deg, var(--cyan), #8fb6ff);
+      font: inherit;
+      font-size: 14px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 8px 28px rgba(91,231,242,.13);
+      transition: transform .2s, filter .2s;
+    }
+
+    .creator-apply:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.06);
+    }
+
+    /* Content Creator application popup */
+
+    .application-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: none;
+      place-items: center;
+      padding: 18px;
+      background: rgba(3,6,13,.82);
+      backdrop-filter: blur(10px);
+    }
+
+    .application-overlay.open {
+      display: grid;
+    }
+
+    .application-modal {
+      width: min(100%, 560px);
+      max-height: min(90vh, 820px);
+      overflow-y: auto;
+      position: relative;
+      padding: clamp(22px, 5vw, 38px);
+      border: 1px solid rgba(153,177,255,.24);
+      border-radius: 22px;
+      background: linear-gradient(145deg, #141d30, #0b101c);
+      box-shadow: 0 30px 100px rgba(0,0,0,.5);
+    }
+
+    .application-close {
+      position: absolute;
+      top: 14px;
+      right: 15px;
+      width: 38px;
+      height: 38px;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      color: var(--text);
+      background: rgba(255,255,255,.04);
+      font-size: 24px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .application-modal h2 {
+      margin: 10px 45px 8px 0;
+      font-size: clamp(25px, 5vw, 34px);
+      letter-spacing: -.04em;
+    }
+
+    .application-intro {
+      margin: 0 0 25px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .application-form {
+      display: grid;
+      gap: 19px;
+    }
+
+    .application-field {
+      display: grid;
+      gap: 8px;
+    }
+
+    .application-field label {
+      font-size: 13px;
+      font-weight: 750;
+      color: #e8edff;
+    }
+
+    .application-field input {
+      width: 100%;
+      min-height: 47px;
+      padding: 12px 14px;
+      border: 1px solid rgba(174,195,255,.22);
+      border-radius: 11px;
+      outline: none;
+      background: rgba(4,8,16,.6);
+      color: var(--text);
+      font: inherit;
+      font-size: 14px;
+    }
+
+    .application-field input:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 3px rgba(91,231,242,.1);
+    }
+
+    .application-field input::placeholder {
+      color: #6f7b94;
+    }
+
+    .send-application {
+      width: 100%;
+      min-height: 49px;
+      margin-top: 5px;
+      border: 0;
+      border-radius: 11px;
+      color: white;
+      background: linear-gradient(105deg,#5865f2,#6478ff);
+      font: inherit;
+      font-weight: 850;
+      cursor: pointer;
+    }
+
+    .send-application:hover {
+      filter: brightness(1.1);
+    }
+
+    .countdown-panel {
+      display: none;
+      text-align: center;
+      padding: 14px 0 4px;
+    }
+
+    .countdown-panel.visible {
+      display: block;
+    }
+
+    .countdown-panel h3 {
+      margin: 0 0 10px;
+      font-size: 21px;
+    }
+
+    .countdown-panel p {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .countdown-number {
+      color: var(--cyan);
+      font-weight: 900;
+    }
+
+    .skip-countdown {
+      border: 1px solid rgba(91,231,242,.4);
+      border-radius: 10px;
+      padding: 12px 18px;
+      background: rgba(91,231,242,.1);
+      color: var(--text);
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    body.modal-open {
+      overflow: hidden;
+    }
+
+    main {
+      width: min(1180px, calc(100% - 36px));
+      margin: 12px auto 0;
+    }
+
+    .hero {
+      position: relative;
+      min-height: 390px;
+      margin: 0 0 54px;
+      display: flex;
+      align-items: center;
+      isolation: isolate;
+    }
+
+    .banner {
+      position: absolute;
+      inset: 20px 0 0;
+      overflow: hidden;
+      z-index: -1;
+      border: 1px solid rgba(173, 194, 255, .15);
+      border-radius: 25px;
+      background: linear-gradient(112deg, #15223b, #101625 52%, #1a2e47);
+      box-shadow: 0 22px 70px rgba(0,0,0,.22);
+    }
+
+    .banner::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(
+          90deg,
+          rgba(5,8,15,.22),
+          rgba(5,8,15,.08) 40%,
+          rgba(5,8,15,.68)
+        ),
+        linear-gradient(
+          0deg,
+          rgba(5,8,15,.48),
+          transparent 55%
+        );
+      pointer-events: none;
+    }
+
+    .banner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 34%;
+      display: block;
+    }
+
+    .hero-copy {
+      position: relative;
+      z-index: 3;
+      width: 56%;
+      margin-left: auto;
+      padding: 56px 6% 52px 3%;
+      text-align: left;
+    }
+
+    .eyebrow {
+      color: var(--cyan);
+      text-transform: uppercase;
+      font-size: 11px;
+      font-weight: 850;
+      letter-spacing: .24em;
+    }
+
+    h1 {
+      margin: 13px 0 12px;
+      font-size: clamp(32px, 5.3vw, 63px);
+      line-height: .99;
+      letter-spacing: -.055em;
+      font-weight: 950;
+    }
+
+    h1 span {
+      display: block;
+      color: #a6baff;
+    }
+
+    .hero-copy p {
+      max-width: 390px;
+      margin: 0;
+      color: #d0d8e9;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .hero-note {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 22px;
+      padding: 9px 12px;
+      color: #dce5ff;
+      font-size: 11px;
+      font-weight: 700;
+      border: 1px solid rgba(169,192,255,.2);
+      border-radius: 10px;
+      background: rgba(8,12,21,.45);
+    }
+
+    .note-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 12px var(--cyan);
+    }
+
+    .below {
+      padding: 0 0 38px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .below h2 {
+      margin: 0;
+      font-size: 20px;
+      letter-spacing: -.025em;
+    }
+
+    .below p {
+      margin: 7px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .below-mark {
+      flex: 0 0 auto;
+      color: #8da7ff;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    footer {
+      width: min(1180px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 22px 0 28px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      color: #7f8aa2;
+      font-size: 11px;
+    }
+
+    footer strong {
+      color: #b9c6e3;
+    }
+
+    @media (max-width: 720px) {
+      .site-header {
+        width: calc(100% - 28px);
+        padding-top: 16px;
+      }
+
+      .brand-mark {
+        width: 38px;
+        height: 38px;
+      }
+
+      .brand-name { font-size: 14px; }
+      .brand-sub { font-size: 9px; }
+
+      .menu-toggle {
+        padding: 10px 12px;
+        gap: 8px;
+        font-size: 12px;
+      }
+
+      .scroll-menu {
+        padding: 22px 16px;
+        margin-bottom: 34px;
+        border-radius: 21px;
+      }
+
+      .scroll-menu-heading {
+        align-items: flex-start;
+      }
+
+      .soon { margin-top: 3px; }
+      .tile { border-radius: 13px; }
+
+      main {
+        width: calc(100% - 28px);
+        margin-top: 5px;
+      }
+
+      .hero {
+        min-height: 550px;
+        margin-bottom: 32px;
+        align-items: flex-start;
+      }
+
+      .banner {
+        inset: 0;
+        border-radius: 21px;
+      }
+
+      .banner::after {
+        background: linear-gradient(
+          180deg,
+          rgba(5,8,15,.66),
+          rgba(5,8,15,.12) 47%,
+          rgba(5,8,15,.12)
+        );
+      }
+
+      .hero-copy {
+        width: 100%;
+        padding: 31px 25px 0;
+        margin: 0;
+        text-align: center;
+      }
+
+      .hero-copy p {
+        margin: 0 auto;
+        font-size: 13px;
+      }
+
+      .hero-note { margin-top: 15px; }
+
+      .below {
+        align-items: flex-start;
+        flex-direction: column;
+        padding-bottom: 27px;
+      }
+
+      footer {
+        width: calc(100% - 28px);
+      }
+    }
+
+    @media (max-width: 380px) {
+      .brand-name { font-size: 12px; }
+      .brand-sub { letter-spacing: .14em; }
+
+      .menu-toggle {
+        gap: 7px;
+        font-size: 11px;
+      }
+
+      .hero { min-height: 520px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="site-header">
+    <a class="brand" href="#top"
+       aria-label="GameCraft Studio – home"
+       style="text-decoration:none">
+      <div class="brand-mark" aria-hidden="true">GC</div>
+      <div>
+        <div class="brand-name">GAMECRAFT STUDIO</div>
+        <div class="brand-sub">Play · Create · Build</div>
+      </div>
+    </a>
+
+    <a class="menu-toggle" href="#explore">
+      Scroll to explore
+      <span class="menu-arrow" aria-hidden="true">↓</span>
+    </a>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-label="About GameCraft Studio">
+      <div class="banner" aria-hidden="true">
+        <img src="kep2.png" alt="">
+      </div>
+
+      <div class="hero-copy">
+        <div class="eyebrow">Where the game begins</div>
+        <h1>GAMECRAFT <span>STUDIO</span></h1>
+        <p>
+          Turning ideas into games, and games into community.
+          Check back soon for new projects!
+        </p>
+        <div class="hero-note">
+          <span class="note-dot" aria-hidden="true"></span>
+          New projects in development
+        </div>
+      </div>
+    </section>
+
+    <section class="scroll-menu" id="explore"
+             aria-label="Explore menu and upcoming projects">
+      <div class="scroll-menu-heading">
+        <div>
+          <div class="eyebrow">Explore</div>
+          <h2>GameCraft Menu</h2>
+          <p>Scroll down to explore the sections coming soon.</p>
+        </div>
+        <span class="soon">Coming Soon</span>
+      </div>
+
+      <button class="creator-apply" id="openApplication" type="button">
+        ✦ Apply as Content Creator
+        <span aria-hidden="true">↗</span>
+      </button>
+
+      <div class="tile-grid" aria-label="Nine upcoming sections">
+        <div class="tile" aria-label="Section 1 – coming soon">?</div>
+        <div class="tile" aria-label="Section 2 – coming soon">?</div>
+        <div class="tile" aria-label="Section 3 – coming soon">?</div>
+        <div class="tile" aria-label="Section 4 – coming soon">?</div>
+        <div class="tile" aria-label="Section 5 – coming soon">?</div>
+        <div class="tile" aria-label="Section 6 – coming soon">?</div>
+        <div class="tile" aria-label="Section 7 – coming soon">?</div>
+        <div class="tile" aria-label="Section 8 – coming soon">?</div>
+        <div class="tile" aria-label="Section 9 – coming soon">?</div>
+      </div>
+
+      <div class="menu-divider"></div>
+
+      <a class="discord-link"
+         href="https://discord.gg/BAUhHuWh9"
+         target="_blank"
+         rel="noopener noreferrer">
+        <svg class="discord-icon" viewBox="0 0 24 24"
+             fill="currentColor" aria-hidden="true">
+          <path d="M19.7 5.3A18 18 0 0 0 15.3 4l-.5 1a16 16 0 0 0-5.6 0l-.5-1a18 18 0 0 0-4.4 1.3C1.5 9.4.7 13.4 1.1 17.4a18 18 0 0 0 5.4 2.7l1.2-2a11 11 0 0 1-1.9-.9l.5-.4a12.8 12.8 0 0 0 11.4 0l.5.4a11 11 0 0 1-1.9.9l1.2 2a18 18 0 0 0 5.4-2.7c.5-4.6-.8-8.6-3.2-12.1ZM8.7 14.8c-1.1 0-2-1-2-2.2s.9-2.2 2-2.2 2 1 2 2.2-.9 2.2-2 2.2Zm6.6 0c-1.1 0-2-1-2-2.2s.9-2.2 2-2.2 2 1 2 2.2-.9 2.2-2 2.2Z"/>
+        </svg>
+        Join the Discord Server
+      </a>
+    </section>
+
+    <section class="below" aria-label="More information">
+      <div>
+        <h2>Let’s build something great.</h2>
+        <p>
+          New content is coming to these sections soon.
+          In the meantime, join our community!
+        </p>
+      </div>
+      <div class="below-mark">GameCraft Studio</div>
+    </section>
+  </main>
+
+  <!-- Content Creator application popup -->
+  <div class="application-overlay" id="applicationOverlay" aria-hidden="true">
+    <section class="application-modal"
+             role="dialog"
+             aria-modal="true"
+             aria-labelledby="applicationTitle">
+
+      <button class="application-close" id="closeApplication"
+              type="button"
+              aria-label="Close application and return to home">×</button>
+
+      <div id="applicationFormView">
+        <div class="eyebrow">Join the team</div>
+        <h2 id="applicationTitle">Content Creator Application</h2>
+        <p class="application-intro">
+          Answer the questions below to apply as a GameCraft Studio content creator.
+        </p>
+
+        <form class="application-form" id="creatorForm">
+          <div class="application-field">
+            <label for="subscribers">How many subscribers do you have?</label>
+            <input id="subscribers" name="subscribers" type="text"
+                   placeholder="e.g. 1,250 subscribers" required>
+          </div>
+
+          <div class="application-field">
+            <label for="averageViews">What is your average number of views?</label>
+            <input id="averageViews" name="averageViews" type="text"
+                   placeholder="e.g. 500 views per video" required>
+          </div>
+
+          <div class="application-field">
+            <label for="platforms">Which platforms do you create content on?</label>
+            <input id="platforms" name="platforms" type="text"
+                   placeholder="e.g. YouTube, TikTok, Twitch" required>
+          </div>
+
+          <button class="send-application" type="submit">
+            Send application →
+          </button>
+        </form>
+      </div>
+
+      <div class="countdown-panel" id="countdownPanel" aria-live="polite">
+        <div class="eyebrow">One last step</div>
+        <h3>Join the Discord server and show it to the owner!</h3>
+        <p>
+          Redirecting to Discord
+          <span class="countdown-number">
+            (<span id="countdownNumber">10</span>)
+          </span>
+        </p>
+        <button class="skip-countdown" id="skipCountdown" type="button">
+          Skip and join Discord now →
+        </button>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <span>© <span id="year"></span> <strong>GameCraft Studio</strong></span>
+    <span>Community · Creativity · Gaming</span>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent =
+      new Date().getFullYear();
+
+    const applicationOverlay =
+      document.getElementById('applicationOverlay');
+
+    const applicationFormView =
+      document.getElementById('applicationFormView');
+
+    const creatorForm =
+      document.getElementById('creatorForm');
+
+    const countdownPanel =
+      document.getElementById('countdownPanel');
+
+    const countdownNumber =
+      document.getElementById('countdownNumber');
+
+    const discordUrl =
+      document.querySelector('.discord-link').href;
+
+    let countdownTimer = null;
+    let secondsLeft = 10;
+
+    function openApplication() {
+      applicationOverlay.classList.add('open');
+      applicationOverlay.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('modal-open');
+
+      document.getElementById('subscribers').focus();
+    }
+
+    function closeApplication() {
+      clearInterval(countdownTimer);
+      countdownTimer = null;
+
+      applicationOverlay.classList.remove('open');
+      applicationOverlay.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('modal-open');
+
+      applicationFormView.style.display = '';
+      countdownPanel.classList.remove('visible');
+      creatorForm.reset();
+
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+
+    function goToDiscord() {
+      clearInterval(countdownTimer);
+      countdownTimer = null;
+
+      window.location.href = discordUrl;
+    }
+
+    document
+      .getElementById('openApplication')
+      .addEventListener('click', openApplication);
+
+    document
+      .getElementById('closeApplication')
+      .addEventListener('click', closeApplication);
+
+    document
+      .getElementById('skipCountdown')
+      .addEventListener('click', goToDiscord);
+
+    applicationOverlay.addEventListener('click', function(event) {
+      if (event.target === applicationOverlay) {
+        closeApplication();
+      }
+    });
+
+    document.addEventListener('keydown', function(event) {
+      if (
+        event.key === 'Escape' &&
+        applicationOverlay.classList.contains('open')
+      ) {
+        closeApplication();
+      }
+    });
+
+    creatorForm.addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      if (!creatorForm.reportValidity()) {
+        return;
+      }
+
+      applicationFormView.style.display = 'none';
+      countdownPanel.classList.add('visible');
+
+      secondsLeft = 10;
+      countdownNumber.textContent = secondsLeft;
+
+      countdownTimer = setInterval(function() {
+        secondsLeft -= 1;
+        countdownNumber.textContent = secondsLeft;
+
+        if (secondsLeft <= 0) {
+          goToDiscord();
+        }
+      }, 1000);
+    });
+  </script>
+</body>
+</html>
